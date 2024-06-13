@@ -190,7 +190,7 @@ void Utils::ClickStartMenu()
 		return;
 	}*/
 
-	SendKeyStroke(VK_LWIN);
+	ShellExecute(NULL, L"open", L"CoreShell.exe", NULL, NULL, SW_SHOWNORMAL);
 }
 
 void Utils::ClickSearch()
