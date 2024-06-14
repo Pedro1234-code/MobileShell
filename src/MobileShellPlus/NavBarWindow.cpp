@@ -88,8 +88,8 @@ UIElement NavBarWindow::BuildUIElement()
 
         <Button x:Name="btnWindows" Padding="0" Grid.Column="2" Height="48" Width="48" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}" >
 			<Viewbox x:Name="fWindows" Height="24" Width="24" Rotation="0" CenterPoint="10,10,0">
-				<Canvas Width="87" Height="87">
-					<Path Data="M2.2 11.8l33.5-4.6v34.5H0V14.3C0 13 0.9 12 2.2 11.8z">
+                    <Canvas Width="87" Height="87">
+				<Path Data="M2.2 11.8l33.5-4.6v34.5H0V14.3C0 13 0.9 12 2.2 11.8z">
 						<Path.Fill>
 							<LinearGradientBrush>
 								<LinearGradientBrush.GradientStops>
@@ -143,7 +143,7 @@ UIElement NavBarWindow::BuildUIElement()
 							</LinearGradientBrush>
 						</Path.Fill>
 					</Path>
-				</Canvas>
+                    </Canvas>
 			</Viewbox>            
         </Button>
 
