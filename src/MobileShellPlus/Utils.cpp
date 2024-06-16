@@ -3,7 +3,12 @@
 #include <shellapi.h>
 #include "Utils.h"
 #include <ShellScalingApi.h>
+#include <windows.h>
+#include "ShObjIdl.h"
 #include <Winuser.h>
+#include <iostream>
+#pragma comment(lib, "shlwapi.lib")
+#pragma comment(lib, "ole32.lib")
 
 #pragma comment(lib, "shell32")
 
@@ -180,19 +185,43 @@ void Utils::ClickBack()
 
 void Utils::ClickStartMenu()
 {
-	/*const auto hWnd_shell = FindWindow(L"Shell_TrayWnd", L"");
-
-	const auto hWnd_start = FindWindowEx(hWnd_shell, nullptr, L"Start", L"Start");
-	if (hWnd_start != nullptr)
+	// Initialize COM library
+	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+	if (FAILED(hr))
 	{
-		SendMessage(hWnd_start, WM_LBUTTONDOWN, 0, 0);
-		SendMessage(hWnd_start, WM_LBUTTONUP, 0, 0);
-		return;
-	}*/
+		std::cerr << "Failed to initialize COM library. Error: " << hr << std::endl;
+	}
 
-	ShellExecute(NULL, L"open", L"CoreShell.exe", NULL, NULL, SW_SHOWNORMAL);
+	// Create an instance of Application Activation Manager
+	IApplicationActivationManager* appActivationManager = nullptr;
+	hr = CoCreateInstance(CLSID_ApplicationActivationManager, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&appActivationManager));
+	if (FAILED(hr))
+	{
+		std::cerr << "Failed to create Application Activation Manager. Error: " << hr << std::endl;
+		CoUninitialize();
+	}
+
+	// Replace with your AppUserModelID
+	const wchar_t* appUserModelId = L"MobileOSDev.CoreShell_d7x680j9yw8bm!CoreShellApp";
+
+	DWORD pid;
+	hr = appActivationManager->ActivateApplication(appUserModelId, nullptr, AO_NONE, &pid);
+	if (FAILED(hr))
+	{
+		std::cerr << "Failed to launch UWP app. Error: " << hr << std::endl;
+	}
+	else
+	{
+		std::wcout << L"App launched successfully with PID: " << pid << std::endl;
+	}
+
+	// Release the Application Activation Manager
+	appActivationManager->Release();
+
+	// Uninitialize COM library
+	CoUninitialize();
 }
-
+ 
 void Utils::ClickSearch()
 {
 	//const auto hWnd_shell = FindWindow(L"Shell_TrayWnd", L"");
