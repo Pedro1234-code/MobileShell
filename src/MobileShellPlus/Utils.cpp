@@ -208,16 +208,6 @@ void Utils::ClickSearch()
 	Utils::SendKeyStrokes(VK_LWIN, 0x51); //KEY S
 }
 
-void Utils::RemoveWinGestures()
-{
-	const auto EdgeUiInputTopHwnd = FindWindow(L"EdgeUiInputTopWndClass", L"");
-	const auto EdgeUiInputHwnd = FindWindow(L"EdgeUiInputWndClass", L"");
-
-	//TEST
-	ShowWindow(EdgeUiInputTopHwnd, SW_HIDE);
-	ShowWindow(EdgeUiInputHwnd, SW_HIDE);
-}
-
 void Utils::SetWinTaskbarState(WinTaskbarState state)
 {
 	APPBARDATA abd;
