@@ -70,14 +70,6 @@ UIElement NavBarWindow::BuildUIElement()
 
         <Grid x:Name="doubleTapGrid" Grid.ColumnSpan="5" Background="{ThemeResource AppBarBorderThemeBrush}" />
 
-        <Button x:Name="btnExit" Margin="16,0,0,0" Padding="0" Grid.Column="0" Height="48" Width="48" HorizontalAlignment="Left" VerticalAlignment="Center" Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}">
-            <FontIcon x:Name="fExit" Glyph="&#xE011;" Rotation="0" CenterPoint="10,10,0" Foreground="{ThemeResource SysBrush}" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <FontIcon.RotationTransition>
-                    <ScalarTransition />
-                </FontIcon.RotationTransition>
-            </FontIcon>
-        </Button>
-
         <Button x:Name="btnBack" Padding="0" Grid.Column="1" Height="48" Width="48" HorizontalAlignment="Center" VerticalAlignment="Center" Style="{StaticResource CommandBarFlyoutEllipsisButtonStyle}">
             <FontIcon x:Name="fBack" Glyph="&#xE0A6;" Rotation="0" CenterPoint="10,10,0" Foreground="{ThemeResource SysBrush}" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <FontIcon.RotationTransition>
