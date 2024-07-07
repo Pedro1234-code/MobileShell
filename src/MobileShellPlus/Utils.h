@@ -32,6 +32,7 @@ public:
 	static void ClickTaskView();
 	static void ClickBack();
 	static void ClickStartMenu();
+	static void LaunchAppWithAUMID();
 	static void ClickSearch();
 	static void RemoveWinGestures();
 	static MONITORINFO GetMonitorInfoFromWindow(HWND hWnd);

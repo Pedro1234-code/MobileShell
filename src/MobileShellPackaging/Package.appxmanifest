@@ -11,10 +11,10 @@
   <Identity
     Name="LumiaWOA.MobileShell"
     Publisher="CN=70CF1695-06B3-4B57-8DCD-3788C28AED2F"
-    Version="0.1.2899.0" />
+    Version="0.1.2901.0" />
 
   <Properties>
-    <DisplayName>MobileShell</DisplayName>
+    <DisplayName>MobileShell for MobileOS</DisplayName>
     <PublisherDisplayName>MobileOSdev</PublisherDisplayName>
     <Logo>Images\StoreLogo.png</Logo>
   </Properties>
@@ -33,7 +33,7 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="MobileShell"
+        DisplayName="MobileShell for MobileOS"
         Description="MobileShell is a mobile-oriented shell alternative for Windows 10 and Windows 11 devices which replaces the standard tablet mode interface."
         BackgroundColor="#000428"
         Square150x150Logo="Images\Square150x150Logo.png"

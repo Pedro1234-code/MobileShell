@@ -7,6 +7,7 @@
 #include "ShObjIdl.h"
 #include <Winuser.h>
 #include <iostream>
+#include <TlHelp32.h>
 #pragma comment(lib, "shlwapi.lib")
 #pragma comment(lib, "ole32.lib")
 
@@ -183,45 +184,108 @@ void Utils::ClickBack()
 	Utils::SendKeyStrokes(VK_LWIN, VK_BACK);
 }
 
-void Utils::ClickStartMenu()
+// Function to launch protocol
+void LaunchProtocol()
 {
-	// Initialize COM library
-	HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-	if (FAILED(hr))
-	{
-		std::cerr << "Failed to initialize COM library. Error: " << hr << std::endl;
-	}
+	// Replace this URL with your specific protocol
+	const wchar_t* protocolUrl = L"coreshell://";
 
-	// Create an instance of Application Activation Manager
-	IApplicationActivationManager* appActivationManager = nullptr;
-	hr = CoCreateInstance(CLSID_ApplicationActivationManager, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&appActivationManager));
-	if (FAILED(hr))
-	{
-		std::cerr << "Failed to create Application Activation Manager. Error: " << hr << std::endl;
-		CoUninitialize();
-	}
+	// ShellExecute function call
+	HINSTANCE result = ShellExecute(
+		nullptr,            // Handle to parent window
+		L"open",            // Operation to perform
+		protocolUrl,        // File to open
+		nullptr,            // Parameters (none for protocol)
+		nullptr,            // Default directory
+		SW_SHOWNORMAL       // Show window normally
+	);
 
-	// Replace with your AppUserModelID
-	const wchar_t* appUserModelId = L"MobileOSDev.CoreShell_d7x680j9yw8bm!CoreShellApp";
-
-	DWORD pid;
-	hr = appActivationManager->ActivateApplication(appUserModelId, nullptr, AO_NONE, &pid);
-	if (FAILED(hr))
+	// Check the result of the ShellExecute call
+	if ((int)result <= 32)
 	{
-		std::cerr << "Failed to launch UWP app. Error: " << hr << std::endl;
+		std::wcerr << L"Failed to launch protocol. Error code: " << (int)result << std::endl;
 	}
 	else
 	{
-		std::wcout << L"App launched successfully with PID: " << pid << std::endl;
+		std::wcout << L"Protocol launched successfully." << std::endl;
+	}
+}
+
+// Function to check if a process is running
+bool IsProcessRunning(const wchar_t* processName)
+{
+	bool isRunning = false;
+	HANDLE hProcessSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	if (hProcessSnap == INVALID_HANDLE_VALUE)
+	{
+		std::cerr << "Failed to take process snapshot." << std::endl;
+		return false;
 	}
 
-	// Release the Application Activation Manager
-	appActivationManager->Release();
+	PROCESSENTRY32 pe32;
+	pe32.dwSize = sizeof(PROCESSENTRY32);
 
-	// Uninitialize COM library
-	CoUninitialize();
+	if (Process32First(hProcessSnap, &pe32))
+	{
+		do
+		{
+			if (_wcsicmp(pe32.szExeFile, processName) == 0)
+			{
+				isRunning = true;
+				break;
+			}
+		} while (Process32Next(hProcessSnap, &pe32));
+	}
+
+	CloseHandle(hProcessSnap);
+	return isRunning;
 }
- 
+
+void Utils::ClickStartMenu()
+{
+	if (IsProcessRunning(L"factoryos-10x-shell.exe"))
+	{
+		LaunchProtocol();
+	}
+	else
+	{
+		HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to initialize COM library. Error: " << hr << std::endl;
+		}
+
+		// Create an instance of Application Activation Manager
+		IApplicationActivationManager* appActivationManager = nullptr;
+		hr = CoCreateInstance(CLSID_ApplicationActivationManager, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&appActivationManager));
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to create Application Activation Manager. Error: " << hr << std::endl;
+			CoUninitialize();
+		}
+
+		// Replace with your AppUserModelID
+		const wchar_t* appUserModelId = L"MobileOSDev.CoreShell_d7x680j9yw8bm!CoreShellApp";
+
+		DWORD pid;
+		hr = appActivationManager->ActivateApplication(appUserModelId, nullptr, AO_NONE, &pid);
+		if (FAILED(hr))
+		{
+			std::cerr << "Failed to launch UWP app. Error: " << hr << std::endl;
+		}
+		else
+		{
+			std::wcout << L"App launched successfully with PID: " << pid << std::endl;
+		}
+
+		// Release the Application Activation Manager
+		appActivationManager->Release();
+
+		// Uninitialize COM library
+		CoUninitialize();
+	}
+}
+
 void Utils::ClickSearch()
 {
 	//const auto hWnd_shell = FindWindow(L"Shell_TrayWnd", L"");
