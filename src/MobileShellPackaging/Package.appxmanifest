@@ -11,7 +11,7 @@
   <Identity
     Name="LumiaWOA.MobileShell"
     Publisher="CN=70CF1695-06B3-4B57-8DCD-3788C28AED2F"
-    Version="0.1.2901.0" />
+    Version="0.1.2903.0" />
 
   <Properties>
     <DisplayName>MobileShell for MobileOS</DisplayName>
